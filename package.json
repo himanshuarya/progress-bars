@@ -18,5 +18,8 @@
     "gulp-useref": "^3.1.4",
     "jshint": "^2.9.5",
     "run-sequence": "^2.2.1"
+  },
+  "engines": {
+    "node": ">=6.6.0"
   }
 }
