@@ -22,7 +22,7 @@
             progressBar.appendChild(bar);            
             progressBars.appendChild(progressBar);            
         });  
-    };
+    }
     
     function createDropdown(length){
         var controls = document.getElementById('controls');
@@ -37,7 +37,7 @@
             dropdown.appendChild(item);
         }
         controls.appendChild(dropdown);
-    };
+    }
     
     function createButtons(buttons){
         var controls = document.getElementById('controls');
@@ -46,6 +46,19 @@
             button.innerHTML = value > 0 ? ('+' + value) : ('' + value);
             controls.appendChild(button);
         });       
+    }
+    
+    var HttpClient = function() {
+        this.get = function(url, callback) {
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.onreadystatechange = function() { 
+                if (httpRequest.readyState === 4 && httpRequest.status === 200){
+                    callback(httpRequest.responseText);
+                }
+            };
+            httpRequest.open( "GET", url, true );            
+            httpRequest.send( null );
+        };
     };
    
     var client = new HttpClient();
