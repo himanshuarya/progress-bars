@@ -1,5 +1,9 @@
-.title{
-    margin: 10px;
+#container{
+   margin: 10px;
+}
+
+.dropdown{
+   margin: 15px 0; 
 }
 
 #progressBars{   
@@ -7,17 +11,28 @@
     .progress-bar{
         position: relative;
         height: 50px;
-        margin: 10px;
+        margin: 10px 0;
         border: 1px solid;       
         .bar{
             height: 50px;
             background-color: rgb(180, 216, 229);           
         }
         .progress-bar-label{
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%, -50%);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
         }
+    }
+}
+
+#controls{
+    display: inline;
+    select{
+       margin-right: 5px;
+    }
+    button{
+        margin: 0 5px;
+        cursor: pointer;
     }
 }
