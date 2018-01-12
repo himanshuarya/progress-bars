@@ -1,4 +1,4 @@
-(function(){
+(function(window, document){
     'use strict';
     
     function createProgressBars(bars, limit){
@@ -12,6 +12,7 @@
 
             var bar = document.createElement('div');
             bar.className = 'bar';
+            bar.value = value;
             bar.style.width = percentValue + '%';
 
             var label = document.createElement('div');
@@ -27,7 +28,7 @@
     function createDropdown(length){
         var controls = document.getElementById('controls');
         var dropdown = document.createElement('select');
-        dropdown.className = 'dropdown';
+        dropdown.id = 'dropdown';
         var container = document.getElementById('container');
         container.appendChild(dropdown);
         for(var i=1; i <= length; i++){
@@ -38,37 +39,72 @@
         }
         controls.appendChild(dropdown);
     }
+
+    var changeWidthOfSelectedBar = function(value, limit){
+        var dropdown = document.getElementById('dropdown');
+        var selectedProgressBar = document.getElementById(dropdown.options[dropdown.selectedIndex].value);
+        var selectedBar = selectedProgressBar.childNodes[1];
+        
+        selectedBar.value += value;
+        if(selectedBar.value < 0){
+           selectedBar.value = 0;
+        } 
+        
+        var percentValue = (selectedBar.value/limit)*100;             
+        if(selectedBar.value > limit){
+           selectedBar.style.width = '100%';
+           selectedBar.style.backgroundColor = 'red';
+        }       
+        else{
+           selectedBar.style.width = percentValue + '%';
+           selectedBar.style.backgroundColor = 'rgb(180, 216, 229)'; 
+        }
+        
+        var label = selectedProgressBar.childNodes[0];
+        label.innerHTML = selectedBar.value + '/' + limit + ' (' + percentValue.toFixed(0) + '%' + ')';
+    };
     
-    function createButtons(buttons){
+    function createButtonControls(buttons, limit){
         var controls = document.getElementById('controls');
         buttons.forEach(function (value){
             var button = document.createElement('button');
             button.innerHTML = value > 0 ? ('+' + value) : ('' + value);
+            button.type = 'button';
+            button.addEventListener('click', function(){changeWidthOfSelectedBar(value, limit);});
             controls.appendChild(button);
         });       
     }
     
-    var HttpClient = function() {
-        this.get = function(url, callback) {
-            var httpRequest = new XMLHttpRequest();
-            httpRequest.onreadystatechange = function() { 
-                if (httpRequest.readyState === 4 && httpRequest.status === 200){
-                    callback(httpRequest.responseText);
-                }
-            };
-            httpRequest.open( "GET", url, true );            
-            httpRequest.send( null );
-        };
-    };
+    var ProgressBars = function(){};
    
-    var client = new HttpClient();
-    client.get('http://pb-api.herokuapp.com/bars', function(responseText) {
-        var response = JSON.parse(responseText);       
-        createProgressBars(response.bars, response.limit);
-        createDropdown(response.bars.length);
-        createButtons(response.buttons);
-    });   
+    ProgressBars.prototype.init = function(data){
+        createProgressBars(data.bars, data.limit);
+        createDropdown(data.bars.length);
+        createButtonControls(data.buttons, data.limit);
+    };
+  
+    var progressBars = new ProgressBars();
+    window.progressBars = progressBars;
     
-})();
+})(window, document);
+
+var HttpClient = function() {
+    this.get = function(url, callback) {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function() { 
+            if (httpRequest.readyState === 4 && httpRequest.status === 200){
+                callback(httpRequest.responseText);
+            }
+        };
+        httpRequest.open( "GET", url, true );            
+        httpRequest.send( null );
+    };
+};
+    
+var client = new HttpClient();
+client.get('http://pb-api.herokuapp.com/bars', function(responseText) {
+   var response = JSON.parse(responseText);       
+   window.progressBars.init(response);
+});
 
 
