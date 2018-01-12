@@ -8,6 +8,8 @@ var gulp = require('gulp');
     del = require('del');
     runSequence = require('run-sequence');
     jshint = require('gulp-jshint');
+ 
+var Server = require('karma').Server;
 
 gulp.task('clean:dist', function() {
   return del.sync('dist');
@@ -49,6 +51,15 @@ gulp.task('watch', ['browserSync', 'sass'], function (){
   gulp.watch('app/*.html', browserSync.reload); 
   gulp.watch('app/js/**/*.js', browserSync.reload);
 });
+
+gulp.task('test', function (done) {
+  Server.start({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, function() {
+    done();
+  });
+}); 
 
 gulp.task('build', function (callback) {
   runSequence('clean:dist', 'sass', 'lint', 'useref', 
