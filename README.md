@@ -6,7 +6,7 @@
 sudo npm install gulp -g
 ```
 
-2. Node version >= 6.6.0 should be installed on your system.
+2. Node version >= 4.2.3 should be installed on your system.
 
 ## Steps to run:
 1. Clone the code from this repository
@@ -16,7 +16,7 @@ sudo npm install gulp -g
     $ gulp
     ```
    
-The Progress bars will show up in your default browser.
+The Progress bars can be accessed at `http://localhost:3000/` in any browser.
 
 Note: For a production build, use the command:
    ```
