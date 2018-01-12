@@ -56,13 +56,19 @@ gulp.task('test', function (done) {
   Server.start({
     configFile: __dirname + '/karma.conf.js',
     singleRun: true
-  }, function() {
-    done();
+  }, function(code) {
+    if (code === 1){
+        console.log('Unit Test failures, exiting process');
+           done('Unit Test Failures');
+    } else {
+        console.log('Unit Tests passed');
+        done();
+    }
   });
 }); 
 
 gulp.task('build', function (callback) {
-  runSequence('clean:dist', 'sass', 'lint', 'useref', 
+  runSequence('clean:dist', 'sass', 'lint', 'test', 'useref', 
     callback
   );
 });
