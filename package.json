@@ -12,6 +12,7 @@
     "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-cssnano": "^2.1.2",
+    "gulp-if": "^2.0.2",
     "gulp-jshint": "^2.1.0",
     "gulp-sass": "^3.1.0",
     "gulp-uglify": "^3.0.0",
@@ -24,6 +25,6 @@
     "run-sequence": "^2.2.1"
   },
   "engines": {
-    "node": ">=6.6.0"
+    "node": ">=4.2.3"
   }
 }
